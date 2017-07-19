@@ -1,0 +1,230 @@
+Submodules
+
+Bad ways to share libraries between projects.
+  Copy libraries into each project as needed.
+    - Can't share changes back.
+    - Libraries get outdated quickly.
+  Post libraries on separate server.
+    - Can't make library changes without project to test it in.
+  Git submodule = git repo inside git repo.
+
+  + Pull down updates easily
+  + Test changes within actuall dependent project
+  + Share changes easily
+  + History independent of containing repo.
+
+  Adding submodule to project.
+
+  1. Create repo
+  2. Go into containing git repo, and issue
+  git submodule add address
+  submodule handeled through .gitmodules configuration file.
+
+  Updating submodule files.
+
+  cd submoduledirectory
+  git checkout master (submodules have no default branch)
+  git commit -m "..."
+  git push
+  cd ..  (parent repo still references old submodule)
+  git add submoduledirectory
+  git commit -m " ... "
+  git push
+
+  Cloning project with submodules
+
+  1) git clone projecturl
+  2) git submodule init (reads .gitmodules) and sets up submodules.
+  3) git submodule update (clones submodules)
+
+  Modifying submodules
+git submodules updates always checks out submodule in headless state.
+
+commits done while in headless state can be merged by doing
+git merge #hash
+
+reflog
+
+git keeps second log in local repository (reflog) viewed through git reflog
+Can use git reset --hard #hashid or git reset --hard HEAD@1 (reflog shortname)
+reflog is local only.
+
+deleted branches
+git branch -D aviary want to recreate deleted branch.
+
+git log --walk-reflogs gives more information about each commit
+git branch aviary HEAD@{1}
+
+Mastering github
+
+Github > filestore
+Can also  do
+Share, Discuss, Code Review
+
+Git has three levels of configuration
+global, local and system.
+
+local = single repository
+system = for all users of system, regardless of username
+
+Forking and cloning
+
+New repository on github, first thing to do, clone locally. Collaborator status
+= right to push changes to repo.
+
+Collaborating on repo without collaborator status = forking.
+
+Submiting pull request
+
+Get changes from fork to original repo through pull request.
+
+Updating fork
+
+2 collaborators work on repository using forks.
+Forks don't contain changes made after fork request.
+Want to be able to pull from upstream, done by the command
+git remote add upstream <path_to_repo>
+git fetch upstream
+git merge upstream/master master
+git push origin master
+
+Should be done every time a pull request is accepted into upstream
+
+Single repository workflow
+
+Regular collaboration team
+
+Fork based collaboration leads to lots of remotes.
+
+Instead, use single repository workflow
+
+                  ------------
+                 |   GitHub   |
+                 |____________|
+                   /   |   \
+                 /     |    \
+               /       |     \
+             /         |      \
+           /           |       \
+      clone1          clone2    clone3
+
+Everyone committing to master branch -> regular conflicts
+Instead, use feature branch strategy. Every developer has own feature
+branch on github repo.
+Collaborating on pull requests.
+
+git push -u pushes to branch with same name on github and sets that branch to
+default upstream.
+
+Best practices for merging pull requests
+
+Three major considerations
+
+Interactive rebase to simplify history?
+Rebase to create linear history
+Use fast-forward or recursive merge.
+
+Carefull use of interactive rebase can simplify history.
+Avoid just squashing together entire feature branch.
+
+Rebasing to create linear history?
++ Creates simpler history
++ Makes it look like features were delivered one at a time.
+- Changes commit hashes so team needs to know what it is doing.
+Only if team is comfortable with it.
+
+Only when it leaves enough context.
+Fast-forward merge or recursive merge
++ Less commits (commits from feature branch but straight onto master with
+no commits)
+- Much harder to tell what feature commits were made on what feature
+branches.
+
+Generally use recursive merge.
+git --checkout master
+git merge --no-ff feature-branch (forces recursive merge.)
+
+Fast forwad merges -> Less commits
+Recursive -> Clear what was done on a branch, single commit to revert.
+
+Tags & Release
+
+When should I create a tag? Every time push is done to production (except
+in continous integration scenario).
+
+3 diff kinds of tags.
+Lightweight, just tag no message or tagger.
+Signed, uses public key to prove identity of tagger.
+Annotated, adds info on who tagged, when and why.
+
+Using annotated tags
+
+git tag -a v1.3.2 -m "Tag Message" -a for annotated -m for message.
+git push --tags (to upload all locally created tags)
+
+Tagging best practices.
+Start tag with v then followed by three numbers
+(major release, minor release, patch version).
+
+Release branches
+
+Generally releases only needs tags, but occasionally need changes to
+a production release withouth affecting master. -> need to use release
+branches.
+
+Release tags point to single commit, release branches can be updated
+with new commits. (Useful if hotfixes are needed).
+
+Use cases for release branches
+
+Manual QA
+
+Long running releases
+On demand hot fixes. (Have to keep previous releases updated)
+
+Relase branches - On demand
+
+If no need for long running release branches.
+
+Releases in github
+
+Github speccific feature for adding information + functionality to tags.
+
+Advantages
+
+Host binary downloads without checking into GIT.
+Provide additional documentation/release notes.
+Users can download source code as zip file, without having to clone
+repository.
+
+Two ways to create releases on github.
+
+Can create release from tag or create brand new release in github interface.
+
+Issues
+
+Can be used for
+  Tracking bugs
+  Manage features
+Enabling issues for a project
+Issues can be enabled by clicking on settings -> options -> Issues
+
+Why use wikis?
+
+Start with README.MD for project imnformation and instructions.
+Project grows -> README.MD too unwieldy
+Enabling Wikis for projects
+settings -> options -> wikis
+
+GitHub pages = static home page relating to project.
+
+Why use GitHub pages?
+Adding documentation for project
+Adding page for user or organization on github.
+
+Configuring a new repository
+
+High level options
+Change  Name, existing links still work.
+Change default branch. (automatic issue tracking only works when fixes are
+merged into default branch).
