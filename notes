@@ -227,4 +227,54 @@ Configuring a new repository
 High level options
 Change  Name, existing links still work.
 Change default branch. (automatic issue tracking only works when fixes are
-merged into default branch).
+merged into default branch). (can create new branch called trunk and make it default)
+
+Project management through github
+
+Readme should contain goals of projects and installation instructions.
+
+Pulse tab on rhs gives overwiev of project activity.
+
+Git doesn't have any authentication at all except for signed tags, neither does
+github.
+
+Access control in github.
+Owners can do anything they want.
+Collaborators can do anything, except manage settings.
+Limit ability to commit using forks.
+Organizations are for code owned by groups.
+Teams allow easier management of permissions.
+
+Connecting to github.
+
+https > ssh.
+use credential helper.
+upgrading to two factor authentication.
+Access tokens can replace passwords
+  For login with 2FA.
+  For access via build scripts/API calls etc.
+  Edit profile  -> application -> Generate New Token.
+  Access tokens can have limited access.
+Automated github access options.
+SSH agent forwarding, no automation available.
+OAuth access token, same permissions as user.
+Deploy key access token limited to single repo.
+Machine user Create a new GITHub account, and give it access to only limited
+number of repositories.
+
+Integrating Existing Services
+
+Settings -> Webhooks & Services.
+
+Webhooks = custom https calls that run when certain events happen on github.
+
+Github API.
+
+Simple curl commands
+curl https://api.github.com
+curl https://api.github.com/emjois
+curl https://api.github.com/users/pethaf
+curl -i -H"token" ....
+Can use github api to create issues.
+
+Hub = CLI for github.
